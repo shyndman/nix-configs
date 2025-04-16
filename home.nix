@@ -80,6 +80,11 @@ in
     iotop
   ];
 
+  nix = {
+    package = pkgs.nix;
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
+
   # Enable the Git module
   modules.git = {
     enable = true;
