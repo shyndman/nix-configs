@@ -114,8 +114,8 @@ in
     # Configure Zsh
     programs.zsh = {
       enable = true;
-      enableAutosuggestions = cfg.autosuggestions.enable;
-      enableSyntaxHighlighting = cfg.syntaxHighlighting.enable;
+      autosuggestion.enable = cfg.autosuggestions.enable;
+      syntaxHighlighting.enable = cfg.syntaxHighlighting.enable;
 
       # Oh My Zsh configuration
       oh-my-zsh = lib.mkIf cfg.ohMyZsh.enable {

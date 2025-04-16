@@ -39,7 +39,7 @@ in
 
   # Explicitly tell Home Manager to manage your shell
   targets.genericLinux.enable = true;
-  targets.genericLinux.extraXdgDataDirs = [ "/usr/share" "/usr/local/share" ];
+  xdg.systemDirs.data = [ "/usr/share" "/usr/local/share" ];
 
   # Packages that should be installed to the user profile.
   # Optimized for Raspberry Pi 5 usage
