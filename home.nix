@@ -10,7 +10,6 @@ let
     ./modules/zsh.nix
     ./modules/git.nix
     ./modules/micro.nix
-    ./modules/zellij.nix
     ./modules/python.nix
     ./modules/onepassword.nix
     # Add other modules here
@@ -99,12 +98,6 @@ in
   modules.micro = {
     enable = true;
     colorscheme = "gruvbox"; # You can try other themes like "dukedark", "gruvbox", "monokai"
-  };
-
-  # Enable the Zellij terminal multiplexer module
-  modules.zellij = {
-    enable = true;
-    enableZshIntegration = true;
   };
 
   # Neovim configuration

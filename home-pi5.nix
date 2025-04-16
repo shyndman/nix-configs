@@ -142,13 +142,13 @@ in
       python = {
         symbol = "🐍 ";
         pyenv_version_name = true;
-        format = 'via [${symbol}${pyenv_prefix}(${version})( \($virtualenv\))]($style) ';
+        format = "via [$symbol$pyenv_prefix($version)( \($virtualenv\))]($style) ";
         style = "yellow bold";
         pyenv_prefix = "pyenv ";
-        python_binary = ["python", "python3"];
+        python_binary = ["python" "python3"];
         detect_extensions = ["py"];
-        detect_files = ["requirements.txt", "pyproject.toml", "setup.py"];
-        detect_folders = [".venv", "venv"];
+        detect_files = ["requirements.txt" "pyproject.toml" "setup.py"];
+        detect_folders = [".venv" "venv"];
       };
 
       rust = {
@@ -165,7 +165,7 @@ in
         format = "via [$symbol$context]($style) ";
         style = "blue bold";
         only_with_files = false; # Always show Docker context for a service hub
-        detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"];
+        detect_files = ["docker-compose.yml" "docker-compose.yaml" "Dockerfile"];
         detect_folders = ["stacks"];
       };
 

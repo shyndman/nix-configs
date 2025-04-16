@@ -89,8 +89,10 @@ in
       '';
     };
 
-    # Create a script for loading 1Password secrets
-    home.file = lib.mkIf cfg.secretsScript.enable {
+    # Create scripts for 1Password integration
+    home.file = lib.mkMerge [
+      # Create a script for loading 1Password secrets
+      (lib.mkIf cfg.secretsScript.enable {
       ".local/bin/op-load-secrets" = {
         executable = true;
         text = ''
@@ -244,10 +246,10 @@ in
           fi
         '';
       };
-    };
+    })
 
     # Create a script for updating SSH authorized keys from 1Password
-    home.file = lib.mkIf cfg.sshKeys.enable (lib.recursiveUpdate config.home.file {
+    (lib.mkIf cfg.sshKeys.enable {
       ".local/bin/op-update-ssh-keys" = {
         executable = true;
         text = ''
@@ -309,7 +311,8 @@ in
           echo "SSH authorized_keys updated successfully from 1Password!"
         '';
       };
-    });
+    })
+    ];
 
     # Set up systemd user timer for updating SSH keys
     systemd.user.services = lib.mkIf cfg.sshKeys.enable {

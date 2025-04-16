@@ -9,13 +9,13 @@ in
 {
   options.modules.micro = {
     enable = lib.mkEnableOption "Micro editor configuration";
-    
+
     colorscheme = lib.mkOption {
       type = lib.types.str;
       default = "simple";
       description = "Micro colorscheme to use.";
     };
-    
+
     settings = lib.mkOption {
       type = lib.types.attrs;
       default = {
@@ -80,46 +80,46 @@ in
       };
       description = "Micro editor settings.";
     };
-    
+
     bindings = lib.mkOption {
       type = lib.types.attrs;
       default = {
         # Default key bindings
-        "Alt-/": "lua:comment.comment",
-        "CtrlUnderscore": "lua:comment.comment",
-        "F5": "lua:wc.wordCount",
-        
+        "Alt-/" = "lua:comment.comment";
+        "CtrlUnderscore" = "lua:comment.comment";
+        "F5" = "lua:wc.wordCount";
+
         # Additional key bindings for GUI-like experience
-        "Ctrl-s": "Save",
-        "Ctrl-o": "OpenFile",
-        "Ctrl-n": "NewTab",
-        "Ctrl-w": "Quit",
-        "Ctrl-q": "QuitAll",
-        "Ctrl-f": "Find",
-        "Ctrl-h": "Replace",
-        "Alt-f": "FindNext",
-        "Alt-n": "FindNext",
-        "Alt-p": "FindPrevious",
-        "Ctrl-z": "Undo",
-        "Ctrl-y": "Redo",
-        "Ctrl-c": "Copy",
-        "Ctrl-x": "Cut",
-        "Ctrl-v": "Paste",
-        "Ctrl-a": "SelectAll",
-        "Ctrl-g": "ToggleHelp",
-        "Ctrl-e": "CommandMode",
-        "Ctrl-Home": "StartOfText",
-        "Ctrl-End": "EndOfText",
-        "Ctrl-Left": "WordLeft",
-        "Ctrl-Right": "WordRight",
-        "Alt-{": "ParagraphPrevious",
-        "Alt-}": "ParagraphNext",
-        "Alt-Up": "MoveLinesUp",
-        "Alt-Down": "MoveLinesDown",
+        "Ctrl-s" = "Save";
+        "Ctrl-o" = "OpenFile";
+        "Ctrl-n" = "NewTab";
+        "Ctrl-w" = "Quit";
+        "Ctrl-q" = "QuitAll";
+        "Ctrl-f" = "Find";
+        "Ctrl-h" = "Replace";
+        "Alt-f" = "FindNext";
+        "Alt-n" = "FindNext";
+        "Alt-p" = "FindPrevious";
+        "Ctrl-z" = "Undo";
+        "Ctrl-y" = "Redo";
+        "Ctrl-c" = "Copy";
+        "Ctrl-x" = "Cut";
+        "Ctrl-v" = "Paste";
+        "Ctrl-a" = "SelectAll";
+        "Ctrl-g" = "ToggleHelp";
+        "Ctrl-e" = "CommandMode";
+        "Ctrl-Home" = "StartOfText";
+        "Ctrl-End" = "EndOfText";
+        "Ctrl-Left" = "WordLeft";
+        "Ctrl-Right" = "WordRight";
+        "Alt-{" = "ParagraphPrevious";
+        "Alt-}" = "ParagraphNext";
+        "Alt-Up" = "MoveLinesUp";
+        "Alt-Down" = "MoveLinesDown";
       };
       description = "Micro key bindings.";
     };
-    
+
     plugins = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [
@@ -135,28 +135,28 @@ in
       description = "Micro plugins to install.";
     };
   };
-  
+
   config = lib.mkIf cfg.enable {
     # Install Micro
     home.packages = with pkgs; [
       micro
     ];
-    
+
     # Configure Micro
     xdg.configFile = {
       # Settings
       "micro/settings.json".text = builtins.toJSON cfg.settings;
-      
+
       # Key bindings
       "micro/bindings.json".text = builtins.toJSON cfg.bindings;
     };
-    
+
     # Install plugins
     home.activation.microPlugins = lib.hm.dag.entryAfter ["writeBoundary"] ''
       # Install Micro plugins
       export MICRO_PATH="$HOME/.config/micro"
       mkdir -p "$MICRO_PATH/plugins"
-      
+
       ${builtins.concatStringsSep "\n" (map (plugin: ''
         if [ ! -d "$MICRO_PATH/plugins/${plugin}" ]; then
           echo "Installing Micro plugin: ${plugin}"

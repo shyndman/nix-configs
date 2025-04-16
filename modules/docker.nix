@@ -112,22 +112,22 @@
     services:
       app:
         image: your-image:latest
-        container_name: ${"${STACK_NAME}"}-app
+        container_name: ''${STACK_NAME}-app
         restart: unless-stopped
         environment:
           - TZ=UTC
         volumes:
           - ./data:/data
         networks:
-          - ${"${STACK_NAME}"}-network
+          - ''${STACK_NAME}-network
 
     networks:
-      ${"${STACK_NAME}"}-network:
-        name: ${"${STACK_NAME}"}-network
+      ''${STACK_NAME}-network:
+        name: ''${STACK_NAME}-network
 
     volumes:
       data:
-        name: ${"${STACK_NAME}"}-data
+        name: ''${STACK_NAME}-data
   '';
 
   # Create a script to initialize new Docker stacks
@@ -219,18 +219,18 @@
     services:
       app:
         image: your-app-image:latest
-        container_name: ${STACK_NAME}-app
+        container_name: $STACK_NAME-app
         restart: unless-stopped
         environment:
           - TZ=UTC
         volumes:
           - ./data:/data
         networks:
-          - ${STACK_NAME}-network
+          - $STACK_NAME-network
 
       nginx:
         image: nginx:alpine
-        container_name: ${STACK_NAME}-nginx
+        container_name: $STACK_NAME-nginx
         restart: unless-stopped
         ports:
           - "8080:80"
@@ -238,17 +238,17 @@
           - ./config/nginx:/etc/nginx/conf.d
           - ./logs/nginx:/var/log/nginx
         networks:
-          - ${STACK_NAME}-network
+          - $STACK_NAME-network
         depends_on:
           - app
 
     networks:
-      ${STACK_NAME}-network:
-        name: ${STACK_NAME}-network
+      $STACK_NAME-network:
+        name: $STACK_NAME-network
 
     volumes:
       data:
-        name: ${STACK_NAME}-data
+        name: $STACK_NAME-data
     EOF
 
         # Create nginx config
@@ -259,7 +259,7 @@
         server_name localhost;
 
         location / {
-            proxy_pass http://${STACK_NAME}-app:8000;
+            proxy_pass http://$STACK_NAME-app:8000;
             proxy_set_header Host \$host;
             proxy_set_header X-Real-IP \$remote_addr;
         }
@@ -275,34 +275,34 @@
     services:
       db:
         image: postgres:14-alpine
-        container_name: ${STACK_NAME}-db
+        container_name: $STACK_NAME-db
         restart: unless-stopped
         environment:
           - POSTGRES_PASSWORD=postgres
           - POSTGRES_USER=postgres
-          - POSTGRES_DB=${STACK_NAME}
+          - POSTGRES_DB=$STACK_NAME
           - TZ=UTC
         volumes:
           - ./data/postgres:/var/lib/postgresql/data
         ports:
           - "5432:5432"
         networks:
-          - ${STACK_NAME}-network
+          - $STACK_NAME-network
 
       adminer:
         image: adminer
-        container_name: ${STACK_NAME}-adminer
+        container_name: $STACK_NAME-adminer
         restart: unless-stopped
         ports:
           - "8080:8080"
         networks:
-          - ${STACK_NAME}-network
+          - $STACK_NAME-network
         depends_on:
           - db
 
     networks:
-      ${STACK_NAME}-network:
-        name: ${STACK_NAME}-network
+      $STACK_NAME-network:
+        name: $STACK_NAME-network
     EOF
         ;;
       *)
