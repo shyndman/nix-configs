@@ -13,11 +13,11 @@
 
     system-manager = {
       url = "github:numtide/system-manager";
-      inputs.nixpkgs.follows = "nixpkgs";  # Use the same nixpkgs as the rest of the project
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, system-manager }:
     let
       # Systems supported
       supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
@@ -29,15 +29,15 @@
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
 
       systemConfigs.default = system-manager.lib.makeSystemConfig {
-      system = "x86_64-linux";  # Change to aarch64-linux for ARM systems
-      modules = [ ./system-config ];
-    };
+        system = "aarch64-linux";  # Change to aarch64-linux for ARM systems
+        modules = [ ./system-config ];
+      };
     in
     {
       # Home Manager configurations
       homeConfigurations = {
-        "your-username" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgsFor.x86_64-linux; # Adjust for your system architecture
+        "shyndman" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgsFor._64-linux; # Adjust for your system architecture
           modules = [
             ./home.nix
             # Uncomment to enable modules
