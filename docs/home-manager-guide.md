@@ -296,7 +296,7 @@ let
 in
 {
   nixpkgs.overlays = [ myOverlays ];
-  
+
   home.packages = with pkgs; [
     neovim  # This will use the overlaid version
   ];

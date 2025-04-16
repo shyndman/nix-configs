@@ -8,6 +8,7 @@ let
   # Import modules appropriate for Raspberry Pi 5
   modules = [
     ./modules/docker.nix
+    ./modules/zsh.nix
     # Add other modules here as needed
   ];
 in
@@ -24,6 +25,22 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  # Set Zsh as the default shell
+  programs.zsh.enable = true;
+  modules.zsh = {
+    enable = true;
+    defaultUser = "vantron";
+    ohMyZsh = {
+      enable = true;
+      theme = "robbyrussell";
+      plugins = [ "git" "docker" "kubectl" "fzf" "history" "sudo" ];
+    };
+  };
+
+  # Explicitly tell Home Manager to manage your shell
+  targets.genericLinux.enable = true;
+  targets.genericLinux.extraXdgDataDirs = [ "/usr/share" "/usr/local/share" ];
 
   # Packages that should be installed to the user profile.
   # Optimized for Raspberry Pi 5 usage
