@@ -55,7 +55,7 @@ in
     # Custom configuration for Starship - personalized for vantron (camper van central services hub)
     settings = {
       add_newline = true;
-      format = "$username$hostname$directory$git_branch$git_status$docker_context$python$cmd_duration$memory_usage$time$custom.sensors\n$character";
+      format = "$username$hostname$directory$git_branch$cmd_duration\n$character";
 
       # Custom van-themed prompt character
       character = {
@@ -73,7 +73,7 @@ in
       };
 
       hostname = {
-        ssh_only = false;
+        ssh_only = true;
         format = "at [$hostname](bold green) ";
         disabled = false;
       };
@@ -131,7 +131,7 @@ in
 
       # System monitoring - important for a service hub
       memory_usage = {
-        disabled = false;
+        disabled = true;
         threshold = -1; # Always show memory usage
         symbol = "🧠 ";
         format = "$symbol[$ram_pct]($style) ";
