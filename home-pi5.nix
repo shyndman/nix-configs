@@ -7,12 +7,7 @@
 let
   # Import modules appropriate for Raspberry Pi 5
   modules = [
-    ./modules/zsh.nix
-    ./modules/git.nix
-    ./modules/micro.nix
-    ./modules/zellij.nix
     ./modules/docker.nix
-    ./modules/python.nix
     # Add other modules here as needed
   ];
 in
@@ -33,68 +28,9 @@ in
   # Packages that should be installed to the user profile.
   # Optimized for Raspberry Pi 5 usage
   home.packages = with pkgs; [
-    # Development tools
-    neovim
-    micro
-    git
-
-    # Languages and runtimes
-    nodejs_20
-    python311
-    rustup
-    go
-
-    # Build tools
-    gnumake
-    cmake
-    ninja
-
-    # CLI utilities
-    htop
-    btop
-    jq
-    yq
-    tmux
-    doggo  # Better dig
-    ripgrep
-    fd
-    fzf
-    bat
-    exa
-
-    # Ubuntu and Raspberry Pi 5 specific tools
-    i2c-tools
-    usbutils
-    pciutils
-    lshw
-
-    # Network tools
-    nmap
-    iperf3
-    mtr
-
-    # System monitoring
+    # System stats
     glances
-    sysstat
-    iotop
   ];
-
-  # Enable the Git module
-  modules.git = {
-    enable = true;
-    # Update with your Git configuration
-    userName = "Your Name";
-    userEmail = "your.email@example.com";
-  };
-
-  # Enable the Zsh module
-  modules.zsh = {
-    enable = true;
-    # Using Starship instead of Oh My Zsh theme
-    ohMyZsh.theme = ""; # Empty to use Starship
-    # Add any additional plugins
-    ohMyZsh.plugins = [ "git" "docker" "fzf" "history" "sudo" ];
-  };
 
   # Enable Starship prompt - blessed by Promptus, the Shell Beautifier
   programs.starship = {
@@ -241,41 +177,6 @@ in
         style = "bold green";
       };
     };
-  };
-
-  # Enable the Micro editor module
-  modules.micro = {
-    enable = true;
-    colorscheme = "simple"; # You can try other themes like "dukedark", "gruvbox", "monokai"
-  };
-
-  # Enable the Zellij terminal multiplexer module
-  modules.zellij = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  # Neovim configuration
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    plugins = with pkgs.vimPlugins; [
-      vim-nix
-      vim-commentary
-      vim-surround
-      vim-fugitive
-      nvim-treesitter
-      telescope-nvim
-      nvim-lspconfig
-      nvim-cmp
-    ];
-  };
-
-  # Direnv for per-directory environment variables
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
   };
 
   # This value determines the Home Manager release that your

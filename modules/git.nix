@@ -9,44 +9,44 @@ in
 {
   options.modules.git = {
     enable = lib.mkEnableOption "Git configuration";
-    
+
     userName = lib.mkOption {
       type = lib.types.str;
-      default = "Scott Hyndman";
+      default = "shyndman";
       description = "Git user name.";
     };
-    
+
     userEmail = lib.mkOption {
       type = lib.types.str;
       default = "scotty.hyndman@gmail.com";
       description = "Git user email.";
     };
-    
+
     extraConfig = lib.mkOption {
       type = lib.types.attrs;
       default = {
         init.defaultBranch = "main";
-        
+
         core.excludesfile = "/home/${config.home.username}/.gitignore.global";
-        
+
         filter.lfs = {
           clean = "git-lfs clean -- %f";
           smudge = "git-lfs smudge -- %f";
           process = "git-lfs filter-process";
           required = true;
         };
-        
+
         diff.colorMoved = "zebra";
-        
+
         credential.helper = "store";
-        
+
         color.ui = "auto";
-        
+
         pager.branch = "bat --paging auto --style plain";
       };
       description = "Extra Git configuration.";
     };
-    
+
     aliases = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       default = {
@@ -68,7 +68,7 @@ in
       };
       description = "Git aliases.";
     };
-    
+
     ignoreFiles = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [
@@ -87,7 +87,7 @@ in
       description = "Files to ignore globally.";
     };
   };
-  
+
   config = lib.mkIf cfg.enable {
     # Install Git and related tools
     home.packages = with pkgs; [
@@ -95,7 +95,7 @@ in
       git-lfs
       gh  # GitHub CLI
     ];
-    
+
     # Configure Git
     programs.git = {
       enable = true;
@@ -104,7 +104,7 @@ in
       extraConfig = cfg.extraConfig;
       aliases = cfg.aliases;
     };
-    
+
     # Create global gitignore file
     home.file.".gitignore.global".text = lib.concatStringsSep "\n" cfg.ignoreFiles;
   };

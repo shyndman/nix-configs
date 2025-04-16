@@ -11,6 +11,8 @@ let
     ./modules/git.nix
     ./modules/micro.nix
     ./modules/zellij.nix
+    ./modules/python.nix
+    ./modules/onepassword.nix
     # Add other modules here
   ];
 in
@@ -31,8 +33,12 @@ in
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     # Development tools
-    vscode
     neovim
+    micro
+    git
+
+    # Term support
+    kitty-terminfo  # For Kitty terminal SSH support
 
     # Languages and runtimes
     nodejs_20
@@ -45,13 +51,6 @@ in
     cmake
     ninja
 
-    # Container tools - blessed by Dockerus, the Container Oracle
-    docker
-    docker-compose
-    docker-buildx
-    lazydocker # TUI for Docker
-    dive # Explore Docker image layers
-
     # CLI utilities
     htop
     btop
@@ -59,19 +58,31 @@ in
     yq
     tmux
     doggo  # Better dig
-    kitty-terminfo  # For Kitty terminal SSH support
+    ripgrep
+    fd
+    fzf
+    bat
+    exa
 
-    # Applications
-    firefox
-    spotify
-    slack
-    discord
+    # Ubuntu and Raspberry Pi 5 specific tools
+    i2c-tools
+    usbutils
+    pciutils
+    lshw
+
+    # Network tools
+    nmap
+    iperf3
+    mtr
+
+    # System monitoring
+    sysstat
+    iotop
   ];
 
   # Enable the Git module
   modules.git = {
     enable = true;
-    # Your Git configuration is already set in the module with your provided values
   };
 
   # Enable the Zsh module
@@ -80,21 +91,19 @@ in
     # Customize Zsh configuration if needed
     ohMyZsh.theme = "robbyrussell"; # Default theme
     # Add any additional plugins
-    ohMyZsh.plugins = [ "git" "docker" "kubectl" "fzf" "history" "sudo" ];
+    ohMyZsh.plugins = [ "git" "docker" "kubectl" "fzf" "history" "sudo" "kitty" ];
   };
 
   # Enable the Micro editor module
   modules.micro = {
     enable = true;
-    colorscheme = "simple"; # You can try other themes like "dukedark", "gruvbox", "monokai"
-    # Additional customization can be done here
+    colorscheme = "gruvbox"; # You can try other themes like "dukedark", "gruvbox", "monokai"
   };
 
   # Enable the Zellij terminal multiplexer module
   modules.zellij = {
     enable = true;
     enableZshIntegration = true;
-    # Additional customization can be done here
   };
 
   # Neovim configuration
@@ -118,6 +127,24 @@ in
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+  };
+
+  # Enable 1Password integration wisth SSH key management using secret references
+  modules.onepassword = {
+    enable = true;
+
+    # Enable CLI
+    cli.enable = true;
+
+    # Enable SSH key management with secret references
+    sshKeys = {
+      enable = true;
+      secretReferences = [
+        "op://Private/Framework 13 Laptop SSH Key/public key"
+        "op://Private/7zmfpfnow3iiavwbuvryuanqwa/public key"
+      ];
+      updateInterval = "daily"; # How often to update keys
+    };
   };
 
   # This value determines the Home Manager release that your

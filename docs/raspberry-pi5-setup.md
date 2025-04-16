@@ -37,11 +37,7 @@ sudo nala install -y build-essential
 sh <(curl -L https://nixos.org/nix/install) --daemon
 ```
 
-After installation, you'll need to log out and log back in, or source the Nix profile:
-
-```bash
-. ~/.nix-profile/etc/profile.d/nix.sh
-```
+After installation, you'll need to log out and log back in.
 
 Verify the installation:
 
@@ -67,7 +63,7 @@ Clone this repository to your Raspberry Pi:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/nix-machine-configs.git
+git clone https://github.com/shyndman/nix-home-configs.git
 cd nix-machine-configs
 ```
 
