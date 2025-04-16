@@ -20,6 +20,7 @@ in
       type = lib.types.attrsOf lib.types.str;
       default = {
         # File operations
+        rm = "trash-put";
         ll = "eza -la";
         ls = "eza";
         lt = "eza -T";

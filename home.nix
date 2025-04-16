@@ -36,6 +36,7 @@ in
     neovim
     micro
     git
+    trash-cli
 
     # Term support
     kitty-terminfo  # For Kitty terminal SSH support
