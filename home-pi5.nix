@@ -7,6 +7,7 @@
 let
   # Import modules appropriate for Raspberry Pi 5
   modules = [
+    ./home.nix  # Import base configuration
     ./modules/docker.nix
     ./modules/zsh.nix
     # Add other modules here as needed
@@ -17,9 +18,7 @@ in
   # Import all modules
   imports = modules;
 
-  # As the sacred texts of Homeus, the Configuration Keeper, guide us:
-
-  # Home Manager needs a bit of information about you and the paths it should manage.
+  # Override username and home directory from base config
   home.username = "vantron";
   home.homeDirectory = "/home/vantron";
 
