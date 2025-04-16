@@ -19,6 +19,8 @@ in
     shellAliases = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       default = {
+        apt-get = "nala";
+
         # File operations
         rm = "trash-put";
         ll = "eza -la";
