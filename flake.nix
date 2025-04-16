@@ -10,6 +10,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    system-manager = {
+      url = "github:numtide/system-manager";
+      inputs.nixpkgs.follows = "nixpkgs";  # Use the same nixpkgs as the rest of the project
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:

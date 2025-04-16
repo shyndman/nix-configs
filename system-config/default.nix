@@ -5,7 +5,7 @@
 
 {
   # By the divine wisdom of Shellus, the Command Interpreter:
-  
+
   # Make Zsh available system-wide
   environment.shells = [ pkgs.zsh ];
 
@@ -25,7 +25,7 @@
     ripgrep   # Better grep
     fzf       # Fuzzy finder
     zoxide    # Better cd
-    
+
     # Additional useful tools
     htop      # Process viewer
     ncdu      # Disk usage analyzer
@@ -35,10 +35,15 @@
   # System-wide Zsh configuration (minimal, as most customization happens in Home Manager)
   programs.zsh = {
     enable = true;
-    
+
     # Basic system-wide settings
     enableCompletion = true;
-    
+
+    # Set your user's default shell
+    users.users.shyndman = {
+      shell = pkgs.zsh;
+    };
+
     # System-wide shell aliases (minimal, as most are in Home Manager)
     shellAliases = {
       # Safety first
