@@ -18,37 +18,6 @@
     skopeo     # Container image management
   ];
 
-  # Docker shell aliases
-  programs.bash.shellAliases = {
-    # Docker
-    d = "docker";
-    dc = "docker compose";
-    dps = "docker ps";
-    dpsa = "docker ps -a";
-    di = "docker images";
-    drmi = "docker rmi";
-    drm = "docker rm";
-    dex = "docker exec -it";
-    drun = "docker run -it";
-    dlogs = "docker logs -f";
-    dprune = "docker system prune -af";
-
-    # Docker Compose
-    dcup = "docker compose up -d";
-    dcdown = "docker compose down";
-    dcrestart = "docker compose restart";
-    dclogs = "docker compose logs -f";
-
-    # Docker Stacks
-    stack-new = "stack-init";
-    stack-up = "cd ~/stacks/\$1 && docker compose up -d";
-    stack-down = "cd ~/stacks/\$1 && docker compose down";
-    stack-logs = "cd ~/stacks/\$1 && docker compose logs -f";
-    stack-restart = "cd ~/stacks/\$1 && docker compose restart";
-    stack-ps = "cd ~/stacks/\$1 && docker compose ps";
-    stack-list = "ls -la ~/stacks";
-  };
-
   # ZSH configuration for Docker
   programs.zsh.shellAliases = {
     # Docker
