@@ -127,7 +127,7 @@ in
         charging_symbol = "⚡";
         discharging_symbol = "💀";
         format = "[$symbol$percentage]($style) ";
-        display = [{ threshold = 20; style = "bold red"; }, { threshold = 50; style = "bold yellow"; }, { threshold = 100; style = "bold green"; }];
+        display = [{ threshold = 20; style = "bold red"; } { threshold = 50; style = "bold yellow"; } { threshold = 100; style = "bold green"; }];
       };
 
       # Time display - useful for a service hub
