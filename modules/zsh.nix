@@ -146,8 +146,8 @@ in
       initExtra = ''
         # By the divine wisdom of Zshellah, the Shell Architect:
 
-        # Load Starship prompt if enabled
-        ${lib.optionalString cfg.starship.enable ''
+        # Load Starship prompt if enabled in our module and not configured elsewhere
+        ${lib.optionalString (cfg.starship.enable && !config.programs.starship.enable) ''
           eval "$(starship init zsh)"
         ''}
 
@@ -190,23 +190,7 @@ in
       '';
     };
 
-    # Configure Starship prompt if enabled and not already configured elsewhere
-    programs.starship = lib.mkIf (cfg.starship.enable && !config.programs.starship.enable) {
-      enable = true;
-      settings = {
-        add_newline = true;
-        character = {
-          success_symbol = "[➜](bold green)";
-          error_symbol = "[✗](bold red)";
-        };
-        git_branch = {
-          format = "[$branch]($style) ";
-          style = "bold purple";
-        };
-        nix_shell = {
-          format = "via [☃️ $name](bold blue) ";
-        };
-      };
-    };
+    # We'll handle Starship configuration in the main config file
+    # This avoids circular dependencies
   };
 }
