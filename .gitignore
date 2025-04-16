@@ -1,0 +1,16 @@
+# Nix build outputs
+result
+result-*
+
+# Flake lock file (uncomment if you want to track it)
+# flake.lock
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
