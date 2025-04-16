@@ -27,6 +27,11 @@
 
       # Nixpkgs instantiated for supported systems
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
+
+      systemConfigs.default = system-manager.lib.makeSystemConfig {
+      system = "x86_64-linux";  # Change to aarch64-linux for ARM systems
+      modules = [ ./system-config ];
+    };
     in
     {
       # Home Manager configurations
