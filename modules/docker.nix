@@ -60,10 +60,7 @@
 
   # Create Docker config directory and configuration
   home.file.".docker/config.json".text = builtins.toJSON {
-    experimental = "enabled";
-    features = {
-      buildkit = true;
-    };
+    detachKeys = "ctrl-t,q";
   };
 
   # Create a directory structure for Docker stacks
