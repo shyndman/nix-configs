@@ -190,8 +190,8 @@ in
       '';
     };
 
-    # Configure Starship prompt if enabled
-    programs.starship = lib.mkIf cfg.starship.enable {
+    # Configure Starship prompt if enabled and not already configured elsewhere
+    programs.starship = lib.mkIf (cfg.starship.enable && !config.programs.starship.enable) {
       enable = true;
       settings = {
         add_newline = true;

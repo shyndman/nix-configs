@@ -26,15 +26,14 @@ in
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # Set Zsh as the default shell
-  programs.zsh.enable = true;
+  # Set Zsh as the default shell through our module
   modules.zsh = {
     enable = true;
     defaultUser = "vantron";
     ohMyZsh = {
       enable = true;
       theme = "robbyrussell";
-      plugins = [ "git" "docker" "kubectl" "fzf" "history" "sudo" ];
+      plugins = [ "git" "docker" "docker-compose" "kubectl" "fzf" "history" "sudo" ];
     };
   };
 
@@ -50,6 +49,7 @@ in
   ];
 
   # Enable Starship prompt - blessed by Promptus, the Shell Beautifier
+  # Override the default configuration from the zsh module
   programs.starship = {
     enable = true;
     # Custom configuration for Starship - personalized for vantron (camper van central services hub)

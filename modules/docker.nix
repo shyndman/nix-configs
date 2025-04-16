@@ -80,10 +80,8 @@
     stack-list = "ls -la ~/stacks";
   };
 
-  # Add Docker ZSH plugin if using Oh-My-Zsh
-  programs.zsh.oh-my-zsh = lib.mkIf config.programs.zsh.oh-my-zsh.enable {
-    plugins = [ "docker" "docker-compose" ];
-  };
+  # Docker plugins are now managed in the zsh module
+  # We don't need to add them here to avoid circular dependencies
 
   # Docker environment variables
   home.sessionVariables = {
