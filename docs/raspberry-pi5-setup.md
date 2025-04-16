@@ -64,24 +64,10 @@ Clone this repository to your Raspberry Pi:
 ```bash
 # Clone the repository
 git clone https://github.com/shyndman/nix-home-configs.git
-cd nix-machine-configs
+cd nix-home-configs
 ```
 
-## Step 4: Update Git Configuration
-
-Update your Git configuration in the `home-pi5.nix` file:
-
-```bash
-# Open the file in your preferred editor
-nano home-pi5.nix
-
-# Update the Git configuration with your name and email
-# Look for the modules.git section and update:
-#   userName = "Your Name";
-#   userEmail = "your.email@example.com";
-```
-
-## Step 5: Apply the Home Manager Configuration
+## Step 4: Apply the Home Manager Configuration
 
 Now you can apply the Home Manager configuration:
 
@@ -95,7 +81,7 @@ This command will:
 2. Create configuration files in your home directory
 3. Set up your shell environment
 
-## Step 6: Verify the Installation
+## Step 5: Verify the Installation
 
 After the installation completes, you can verify that Home Manager is working correctly:
 

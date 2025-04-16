@@ -90,7 +90,7 @@ in
       };
 
       git_state = {
-        format = '[\($state( $progress_current of $progress_total)\)](bold yellow)';
+        format = "[\($state( $progress_current of $progress_total)\)](bold yellow)";
         rebase = "REBASING";
         merge = "MERGING";
         revert = "REVERTING";
@@ -109,7 +109,7 @@ in
         staged = "[++\($count\)](green)";
         renamed = "🔄";
         deleted = "🗑️";
-        format = '([$all_status$ahead_behind]($style) )';
+        format = "([$all_status$ahead_behind]($style) )";
       };
 
       # System monitoring - important for a service hub
