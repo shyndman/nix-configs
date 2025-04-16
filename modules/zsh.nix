@@ -34,25 +34,10 @@ in
 
         # Git shortcuts
         g = "git";
-        ga = "git a";
-        gb = "git b";
-        gca = "git ca";
-        gco = "git co";
-        gs = "git s";
-        gd = "git d";
-        gdc = "git dc";
-        gc = "git c";
-        gus = "git us";
-        gri = "git ri";
-        grim = "git rim";
-        grc = "git rc";
-        gpullr = "git pullr";
-        glg = "git lg";
 
         # Other tools
         k = "kubectl";
         tf = "terraform";
-        dc = "docker-compose";
 
         # Search tools
         f = "fd";
