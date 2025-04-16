@@ -39,6 +39,7 @@ in
 
     # Term support
     kitty-terminfo  # For Kitty terminal SSH support
+    tio # Nice serial console
 
     # Languages and runtimes
     nodejs_20
