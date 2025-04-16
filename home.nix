@@ -12,6 +12,7 @@ let
     ./modules/micro.nix
     ./modules/python.nix
     ./modules/onepassword.nix
+    ./modules/zsh-edit.nix
     # Add other modules here
   ];
 in
@@ -145,6 +146,17 @@ in
       ];
       updateInterval = "daily"; # How often to update keys
     };
+  };
+
+  # Enable the zsh-edit module for better word movement
+  modules.zsh-edit = {
+    enable = true;
+    # For subword movement (Alt+Left/Right), we only want underscore as a word character
+    # This makes Alt+arrow stop at punctuation, camelCase, and special characters
+    subwordChars = "_";
+    # For full word movement (Ctrl+Left/Right), we use VSCode-like word characters
+    # This makes Ctrl+arrow behave more like VSCode's word navigation
+    wordChars = "*?_-.[]~=/&;!#$%^(){}<>";
   };
 
   # This value determines the Home Manager release that your
