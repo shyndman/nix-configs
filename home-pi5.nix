@@ -7,7 +7,6 @@
 let
   # Import modules appropriate for Raspberry Pi 5
   modules = [
-    ./home.nix  # Import base configuration
     ./modules/docker.nix
     ./modules/zsh.nix
     # Add other modules here as needed

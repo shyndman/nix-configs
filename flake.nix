@@ -50,6 +50,7 @@
         "vantron" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgsFor.aarch64-linux; # Raspberry Pi 5 uses aarch64 architecture
           modules = [
+            ./home
             ./home-pi5.nix
             # Modules are imported in home-pi5.nix
           ];
