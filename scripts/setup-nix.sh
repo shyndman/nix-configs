@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 # Setup script for Nix and Home Manager
@@ -28,6 +29,22 @@ if ! grep -q "experimental-features" ~/.config/nix/nix.conf 2>/dev/null; then
     echo "✅ Flakes enabled."
 else
     echo "✅ Flakes already enabled."
+fi
+
+# Ensure Home Manager is installed and in PATH
+echo "🔄 Setting up Home Manager..."
+if ! command -v home-manager >/dev/null 2>&1; then
+    echo "🔄 Installing Home Manager..."
+    nix run home-manager/release-23.11 -- init --switch
+    
+    # Add Home Manager to PATH
+    if ! grep -q "home-manager" ~/.profile; then
+        echo "export PATH=\$HOME/.nix-profile/bin:\$PATH" >> ~/.profile
+        echo "✅ Added Home Manager to PATH in ~/.profile"
+    fi
+    source ~/.profile
+else
+    echo "✅ Home Manager is already installed."
 fi
 
 # Get username
@@ -88,3 +105,4 @@ Your Nix configuration is now ready. Here are some useful commands:
 
 May the blessings of Nixus be upon your configurations!
 "
+

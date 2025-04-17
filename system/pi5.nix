@@ -1,5 +1,3 @@
-# System-wide configuration for NixOS on Raspberry Pi 5
-# This file defines system-level settings that apply to all users
 
 { config, pkgs, lib, ... }:
 
@@ -113,7 +111,17 @@
         '';
       };
     };
-    
+
+    # Enable Tailscale with 1Password auth key
+    system.tailscale.enable = true;
+    modules.onepassword.secrets."tailscale/auth-key" = {
+      vault = "Tailscale";
+      item = "auth-key";
+    };
+
+    # Note: Ensure firewall allows UDP port 41641 for Tailscale
+    # This must be configured manually on the base OS
+
     # Pi-specific services
     systemd.services = {
       # System monitor service
@@ -196,3 +204,4 @@
     };
   };
 }
+</PlandexWhole

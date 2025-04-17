@@ -63,61 +63,57 @@ if ! nix --version | grep -q "nix-command"; then
   export NIX_CONFIG="experimental-features = nix-command flakes"
 fi
 
+
 # Apply home configuration
 apply_home_config() {
   print_header "Applying Home Manager Configuration for vantron"
   
-  # Check if home-manager is available
-  if ! command_exists home-manager && ! nix-shell -p home-manager --run "command -v home-manager" >/dev/null 2>&1; then
-    print_warning "home-manager not found. Will use nix run to execute it."
-    
-    # Apply home configuration using nix run
+  # First try with nix run if home-manager isn't in PATH
+  if ! command_exists home-manager; then
+    print_warning "home-manager not found in PATH. Using nix run..."
     if nix run home-manager/release-23.11 -- switch --flake .#vantron; then
-      print_success "Home Manager configuration applied successfully!"
+      print_success "Home Manager configuration applied successfully using nix run!"
+      return 0
     else
-      print_error "Failed to apply Home Manager configuration."
-      return 1
-    fi
-  else
-    # Apply home configuration using installed home-manager
-    if home-manager switch --flake .#vantron; then
-      print_success "Home Manager configuration applied successfully!"
-    else
-      print_error "Failed to apply Home Manager configuration."
+      print_error "Failed to apply Home Manager configuration with nix run."
       return 1
     fi
   fi
-  
-  return 0
+
+  # If home-manager is in PATH, use it directly
+  if home-manager switch --flake .#vantron; then
+    print_success "Home Manager configuration applied successfully!"
+  else
+    print_error "Failed to apply Home Manager configuration."
+    return 1
+  fi
 }
+    
+
 
 # Apply system configuration
 apply_system_config() {
   print_header "Applying System Manager Configuration for Pi 5"
   
-  # Check if system-manager is available
-  if ! command_exists system-manager && ! nix-shell -p system-manager --run "command -v system-manager" >/dev/null 2>&1; then
-    print_warning "system-manager not found. Will use nix run to execute it."
-    
-    # Apply system configuration using nix run
+  if ! command_exists system-manager; then
+    print_warning "system-manager not found. Using nix run..."
     if nix run github:numtide/system-manager -- switch --flake .#pi5; then
-      print_success "System Manager configuration applied successfully!"
+      print_success "System Manager configuration applied successfully using nix run!"
+      return 0
     else
-      print_error "Failed to apply System Manager configuration."
-      return 1
-    fi
-  else
-    # Apply system configuration using installed system-manager
-    if system-manager switch --flake .#pi5; then
-      print_success "System Manager configuration applied successfully!"
-    else
-      print_error "Failed to apply System Manager configuration."
+      print_error "Failed to apply System Manager configuration with nix run."
       return 1
     fi
   fi
-  
-  return 0
+
+  if system-manager switch --flake .#pi5; then
+    print_success "System Manager configuration applied successfully!"
+  else
+    print_error "Failed to apply System Manager configuration."
+    return 1
+  fi
 }
+    
 
 # Verify configurations
 verify_configs() {
@@ -197,3 +193,4 @@ main() {
 
 # Run the main function
 main
+
