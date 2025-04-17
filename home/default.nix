@@ -64,7 +64,7 @@ in
     fd
     fzf
     bat
-    exa
+    eza
 
     # Ubuntu and Raspberry Pi 5 specific tools
     i2c-tools
