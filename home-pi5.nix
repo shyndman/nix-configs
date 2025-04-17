@@ -1,21 +1,24 @@
+
 # Home Manager configuration file for Raspberry Pi 5
 # This file defines user-specific configuration for the Pi 5
 
 { config, pkgs, ... }:
 
-# Import modules
+# Import the base configuration from home.nix
 let
+  # Import the base configuration
+  baseConfig = import ./home.nix { inherit config pkgs; };
+  
   # Import modules appropriate for Raspberry Pi 5
-  modules = [
+  piModules = [
     ./modules/docker.nix
-    ./modules/zsh.nix
-    # Add other modules here as needed
+    # Add other Pi-specific modules here as needed
   ];
 in
 
 {
-  # Import all modules
-  imports = modules;
+  # Import all modules from base config and Pi-specific modules
+  imports = baseConfig.imports ++ piModules;
 
   # Override username and home directory from base config
   home.username = "vantron";
@@ -40,11 +43,11 @@ in
   xdg.systemDirs.data = [ "/usr/share" "/usr/local/share" ];
 
   # Packages that should be installed to the user profile.
-  # Optimized for Raspberry Pi 5 usage
-  home.packages = with pkgs; [
-    # System stats
+  # Combine base packages with Pi-specific packages
+  home.packages = baseConfig.home.packages ++ (with pkgs; [
+    # System stats specific for Pi
     glances
-  ];
+  ]);
 
   # Enable Starship prompt - blessed by Promptus, the Shell Beautifier
   # Override the default configuration from the zsh module
@@ -204,3 +207,4 @@ in
   # Home Manager release notes.
   home.stateVersion = "23.11"; # Please read the comment!
 }
+
