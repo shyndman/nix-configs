@@ -40,7 +40,7 @@ if ! command -v home-manager >/dev/null 2>&1; then
     # Add Home Manager to PATH in multiple profile files for better persistence
     for profile_file in ~/.profile ~/.bashrc ~/.zshrc; do
         if [ -f "$profile_file" ]; then
-            if ! grep -q "home-manager" "$profile_file"; then
+            if ! (grep -q "home-manager" "$profile_file" || grep -q "\.nix-profile/bin" "$profile_file"); then
                 echo "export PATH=\$HOME/.nix-profile/bin:\$PATH" >> "$profile_file"
                 echo "✅ Added Home Manager to PATH in $profile_file"
             fi
@@ -138,4 +138,5 @@ Your Nix configuration is now ready. Here are some useful commands:
 
 May the blessings of Nixus be upon your configurations!
 "
+
 
