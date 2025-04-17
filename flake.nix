@@ -1,3 +1,4 @@
+
 {
   description = "Nix configuration for packages and development environments";
 
@@ -28,21 +29,41 @@
       # Nixpkgs instantiated for supported systems
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
 
-      systemConfigs.default = system-manager.lib.makeSystemConfig {
-        system = "aarch64-linux";  # Change to aarch64-linux for ARM systems
-        modules = [ ./system-config ];
+      # System configurations using system-manager
+      systemConfigs = {
+        # Default x86_64 system configuration
+        default = system-manager.lib.makeSystemConfig {
+          system = "x86_64-linux";
+          modules = [ ./system/default.nix ];
+        };
+        
+        # Raspberry Pi 5 system configuration
+        pi5 = system-manager.lib.makeSystemConfig {
+          system = "aarch64-linux"; # Raspberry Pi 5 uses aarch64 architecture
+          modules = [ 
+            ./system/pi5.nix
+            # Add any additional Pi-specific system modules here
+          ];
+          system = "aarch64-linux";
+          modules = [ ./system/pi5.nix ];
+        };
       };
     in
     {
+      # System configurations
+      systemConfigurations = systemConfigs;
+
       # Home Manager configurations
       homeConfigurations = {
+        # Desktop/laptop configuration for user shyndman
         "shyndman" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgsFor._64-linux; # Adjust for your system architecture
+          pkgs = nixpkgsFor.x86_64-linux;
           modules = [
-            ./home.nix
+            ./home/default.nix
+            # Additional modules can be enabled here if needed
             # Uncomment to enable modules
-            # ./modules/docker.nix
-            # ./modules/python.nix
+            # ./home/modules/docker.nix
+            # ./home/modules/python.nix
           ];
         };
 
@@ -50,9 +71,8 @@
         "vantron" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgsFor.aarch64-linux; # Raspberry Pi 5 uses aarch64 architecture
           modules = [
-            ./home
-            ./home-pi5.nix
-            # Modules are imported in home-pi5.nix
+            ./home/pi5.nix
+            # Modules are imported in pi5.nix
           ];
         };
       };
@@ -128,3 +148,4 @@
       );
     };
 }
+
