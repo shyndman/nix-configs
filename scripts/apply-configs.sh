@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 # Script to apply both home and system configurations
@@ -63,32 +64,44 @@ if ! nix --version | grep -q "nix-command"; then
   export NIX_CONFIG="experimental-features = nix-command flakes"
 fi
 
-
 # Apply home configuration
 apply_home_config() {
   print_header "Applying Home Manager Configuration for vantron"
   
-  # First try with nix run if home-manager isn't in PATH
-  if ! command_exists home-manager; then
-    print_warning "home-manager not found in PATH. Using nix run..."
-    if nix run home-manager/release-23.11 -- switch --flake .#vantron; then
-      print_success "Home Manager configuration applied successfully using nix run!"
+  # Check if home-manager is in PATH
+  if command_exists home-manager; then
+    print_success "Found home-manager in PATH, using it directly."
+    if home-manager switch --flake .#vantron; then
+      print_success "Home Manager configuration applied successfully!"
       return 0
     else
-      print_error "Failed to apply Home Manager configuration with nix run."
-      return 1
+      print_error "Failed to apply Home Manager configuration with direct command."
+      print_warning "Trying fallback method with nix run..."
     fi
-  fi
-
-  # If home-manager is in PATH, use it directly
-  if home-manager switch --flake .#vantron; then
-    print_success "Home Manager configuration applied successfully!"
   else
+    print_warning "home-manager not found in PATH. Using nix run..."
+  fi
+  
+  # Fallback to nix run if home-manager isn't in PATH or direct command failed
+  print_warning "Using nix run home-manager/release-23.11 as fallback..."
+  if nix run home-manager/release-23.11 -- switch --flake .#vantron; then
+    print_success "Home Manager configuration applied successfully using nix run!"
+    
+    # Suggest adding home-manager to PATH for future use
+    if ! command_exists home-manager; then
+      print_warning "Consider running scripts/setup-nix.sh to add home-manager to your PATH"
+      print_warning "Or add 'export PATH=$HOME/.nix-profile/bin:$PATH' to your shell profile"
+    fi
+    return 0
+  else
+    print_error "Failed to apply Home Manager configuration with nix run."
+    print_error "Please ensure Home Manager is properly installed."
+    print_error "Run scripts/setup-nix.sh to set up Nix and Home Manager."
     print_error "Failed to apply Home Manager configuration."
     return 1
   fi
 }
-    
+
 
 
 # Apply system configuration
@@ -113,7 +126,7 @@ apply_system_config() {
     return 1
   fi
 }
-    
+
 
 # Verify configurations
 verify_configs() {

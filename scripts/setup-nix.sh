@@ -37,14 +37,47 @@ if ! command -v home-manager >/dev/null 2>&1; then
     echo "🔄 Installing Home Manager..."
     nix run home-manager/release-23.11 -- init --switch
     
-    # Add Home Manager to PATH
-    if ! grep -q "home-manager" ~/.profile; then
-        echo "export PATH=\$HOME/.nix-profile/bin:\$PATH" >> ~/.profile
-        echo "✅ Added Home Manager to PATH in ~/.profile"
+    # Add Home Manager to PATH in multiple profile files for better persistence
+    for profile_file in ~/.profile ~/.bashrc ~/.zshrc; do
+        if [ -f "$profile_file" ]; then
+            if ! grep -q "home-manager" "$profile_file"; then
+                echo "export PATH=\$HOME/.nix-profile/bin:\$PATH" >> "$profile_file"
+                echo "✅ Added Home Manager to PATH in $profile_file"
+            fi
+        fi
+    done
+    
+    # Create profile files if they don't exist
+    if [ ! -f ~/.profile ]; then
+        echo "export PATH=\$HOME/.nix-profile/bin:\$PATH" > ~/.profile
+        echo "✅ Created ~/.profile with Home Manager PATH"
+    fi
+    
+    # Source the profile to update current session
+    if [ -f ~/.profile ]; then
+        . ~/.profile
+    fi
+    
+    # Verify Home Manager is now accessible
+    if command -v home-manager >/dev/null 2>&1; then
+        echo "✅ Home Manager successfully installed and added to PATH."
+    else
+        echo "⚠️ Home Manager installed but not in PATH. You may need to restart your shell."
+        echo "  Run 'source ~/.profile' or restart your terminal to access home-manager."
     fi
     source ~/.profile
 else
     echo "✅ Home Manager is already installed."
+    
+    # Ensure it's in PATH for all relevant profile files
+    for profile_file in ~/.profile ~/.bashrc ~/.zshrc; do
+        if [ -f "$profile_file" ]; then
+            if ! grep -q "home-manager" "$profile_file" && ! grep -q "\.nix-profile/bin" "$profile_file"; then
+                echo "export PATH=\$HOME/.nix-profile/bin:\$PATH" >> "$profile_file"
+                echo "✅ Added Home Manager to PATH in $profile_file"
+            fi
+        fi
+    done
 fi
 
 # Get username
