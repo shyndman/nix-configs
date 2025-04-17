@@ -39,8 +39,8 @@ in
     trash-cli
 
     # Term support
-    kitty-terminfo  # For Kitty terminal SSH support
-    pkgs.tio # Nice serial console
+    pkgs.kitty.terminfo  # For Kitty terminal SSH support
+    tio # Nice serial console
 
     # Languages and runtimes
     nodejs_20
