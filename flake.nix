@@ -44,8 +44,6 @@
             ./system/pi5.nix
             # Add any additional Pi-specific system modules here
           ];
-          system = "aarch64-linux";
-          modules = [ ./system/pi5.nix ];
         };
       };
     in
