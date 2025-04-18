@@ -67,13 +67,13 @@ fi
 # Apply home configuration
 apply_home_config() {
   print_header "Applying Home Manager Configuration for vantron"
-  
+
   # First try with nix run if home-manager isn't in PATH
   if ! command_exists home-manager; then
     print_warning "home-manager not found in PATH. Using nix run..."
     if nix run home-manager/release-23.11 -- switch --flake .#vantron; then
       print_success "Home Manager configuration applied successfully using nix run!"
-      
+
       # Suggest adding home-manager to PATH for future use
       print_warning "Consider running scripts/setup-nix.sh to add home-manager to your PATH"
       print_warning "Or add 'export PATH=$HOME/.nix-profile/bin:$PATH' to your shell profile"
@@ -94,7 +94,7 @@ apply_home_config() {
   else
     print_error "Failed to apply Home Manager configuration with direct command."
     print_warning "Trying fallback method with nix run..."
-    
+
     # Fallback to nix run if direct command failed
     if nix run home-manager/release-23.11 -- switch --flake .#vantron; then
       print_success "Home Manager configuration applied successfully using nix run fallback!"
@@ -106,21 +106,13 @@ apply_home_config() {
       return 1
     fi
     return 0
-  else
-    print_error "Failed to apply Home Manager configuration with nix run."
-    print_error "Please ensure Home Manager is properly installed."
-    print_error "Run scripts/setup-nix.sh to set up Nix and Home Manager."
-    print_error "Failed to apply Home Manager configuration."
-    return 1
   fi
 }
-
-
 
 # Apply system configuration
 apply_system_config() {
   print_header "Applying System Manager Configuration for Pi 5"
-  
+
   if ! command_exists system-manager; then
     print_warning "system-manager not found. Using nix run..."
     if nix run github:numtide/system-manager -- switch --flake .#pi5; then
@@ -144,7 +136,7 @@ apply_system_config() {
 # Verify configurations
 verify_configs() {
   print_header "Verifying Configurations"
-  
+
   # Verify home configuration
   echo "Checking Home Manager configuration..."
   if command_exists home-manager; then
@@ -152,7 +144,7 @@ verify_configs() {
   else
     nix run home-manager/release-23.11 -- generations | head -n 1
   fi
-  
+
   # Verify system configuration
   echo "Checking System Manager configuration..."
   if command_exists system-manager; then
@@ -160,14 +152,14 @@ verify_configs() {
   else
     nix run github:numtide/system-manager -- generations | head -n 1
   fi
-  
+
   # Check if zsh is configured correctly
   if [ -f "$HOME/.zshrc" ]; then
     echo "ZSH configuration found."
   else
     print_warning "ZSH configuration not found. Home Manager might not have applied correctly."
   fi
-  
+
   # Check system services
   echo "Checking system services..."
   if systemctl is-active pi-monitor >/dev/null 2>&1; then
@@ -175,7 +167,7 @@ verify_configs() {
   else
     print_warning "pi-monitor service is not active. System Manager might not have applied correctly."
   fi
-  
+
   if systemctl is-active van-monitor >/dev/null 2>&1; then
     print_success "van-monitor service is active."
   else
@@ -186,13 +178,13 @@ verify_configs() {
 # Main execution
 main() {
   print_header "Starting Configuration Application"
-  
+
   # Check if running as root for system configuration
   if [[ $EUID -ne 0 ]]; then
     print_warning "Not running as root. System configuration may fail."
     print_warning "Consider running this script with sudo if you need to apply system configuration."
   fi
-  
+
   # Apply home configuration
   if apply_home_config; then
     print_success "Home configuration applied successfully."
@@ -200,7 +192,7 @@ main() {
     print_error "Failed to apply home configuration."
     exit 1
   fi
-  
+
   # Apply system configuration
   if apply_system_config; then
     print_success "System configuration applied successfully."
@@ -208,10 +200,10 @@ main() {
     print_error "Failed to apply system configuration."
     exit 1
   fi
-  
+
   # Verify configurations
   verify_configs
-  
+
   print_header "Configuration Application Complete"
   print_success "Both home and system configurations have been applied."
   print_success "Your Raspberry Pi 5 is now configured for use in the van!"
@@ -219,4 +211,3 @@ main() {
 
 # Run the main function
 main
-
