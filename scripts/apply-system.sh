@@ -1,10 +1,12 @@
 
 #!/usr/bin/env bash
 
+#!/bin/bash
+
 # Script to apply system configuration for Raspberry Pi 5
 # This script applies the system-level configuration using system-manager
 
-set -euo pipefail
+set -eu
 
 # Colors for output
 RED='\033[0;31m'
@@ -14,6 +16,7 @@ NC='\033[0m' # No Color
 
 # Check if running as root
 if [[ $EUID -ne 0 ]]; then
+   echo -e "${RED}Error: This script must be run as root${NC}" 
    echo -e "${RED}Error: This script must be run as root${NC}"
    exit 1
 fi
@@ -26,29 +29,30 @@ fi
 
 # Apply the system configuration
 echo -e "${GREEN}Applying system configuration for Raspberry Pi 5...${NC}"
-nix run github:numtide/system-manager -- switch --flake .#pi5
+nix run github:numtide/system-manager -- switch --flake .#systemConfigs.pi5
 
 # Verify the configuration was applied
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}System configuration successfully applied!${NC}"
-
+    
     # Display system information
     echo -e "${YELLOW}System Information:${NC}"
     uname -a
     echo ""
-
+    
     # Display running services
     echo -e "${YELLOW}Running Services:${NC}"
     systemctl list-units --type=service --state=running | grep -E 'pi-monitor|van-monitor|mosquitto|gpsd'
     echo ""
-
+    
     # Display network information
     echo -e "${YELLOW}Network Information:${NC}"
     ip addr show | grep -E 'inet '
     echo ""
-
+    
     echo -e "${GREEN}System is ready for use in the van!${NC}"
 else
     echo -e "${RED}Failed to apply system configuration. Please check the logs.${NC}"
     exit 1
 fi
+
