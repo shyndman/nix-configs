@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 # Script to apply system configuration for Raspberry Pi 5
@@ -20,7 +21,7 @@ fi
 # Check if system-manager is installed
 if ! command -v system-manager &> /dev/null; then
     echo -e "${YELLOW}system-manager not found. Installing...${NC}"
-    nix-env -iA nixpkgs.system-manager
+    nix run github:numtide/system-manager -- --version &> /dev/null || nix run github:numtide/system-manager
 fi
 
 # Apply the system configuration
