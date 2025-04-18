@@ -6,6 +6,8 @@
     # Blessed by Nixus, the Package Provider
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     # Home Manager for user configuration
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -17,7 +19,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
+  in
   outputs = { self, flake-utils, nixpkgs, home-manager, system-manager }:
     let
       # Systems supported
@@ -30,13 +32,11 @@
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
 
       # System configurations using system-manager
-
-      # System configurations
       systemConfigs.pi5 = system-manager.lib.makeSystemConfig {
         system = "aarch64-linux";
         modules = [ ./system/pi5.nix ];
       };
-    
+
     {
 
       # System configurations
@@ -137,4 +137,3 @@
       );
     };
 }
-
