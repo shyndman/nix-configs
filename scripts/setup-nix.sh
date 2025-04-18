@@ -113,9 +113,6 @@ if [ ! -d .git ]; then
     echo "✅ Git repository initialized."
 fi
 
-echo "🔄 Installing Home Manager..."
-nix run home-manager/release-23.11 -- init --switch
-
 echo "
 🎉 Setup complete! 🎉
 
@@ -138,5 +135,3 @@ Your Nix configuration is now ready. Here are some useful commands:
 
 May the blessings of Nixus be upon your configurations!
 "
-
-
