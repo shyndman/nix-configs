@@ -48,9 +48,10 @@
       };
     in
     {
-      # System configurations
-      systemConfigurations = systemConfigs;
 
+      # System configurations
+      systemConfigs = systemConfigs;
+    
       # Home Manager configurations
       homeConfigurations = {
         # Desktop/laptop configuration for user shyndman
@@ -146,4 +147,5 @@
       );
     };
 }
+
 
