@@ -1,10 +1,14 @@
 
 #!/usr/bin/env bash
 
-#!/bin/bash
-
 # Script to apply system configuration for Raspberry Pi 5
 # This script applies the system-level configuration using system-manager
+
+# Source utility functions
+source "$(dirname "$0")/utils.sh"
+
+# Ensure we're running on the Pi
+ensure_on_host "$0" "$@"
 
 set -eu
 
