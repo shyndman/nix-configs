@@ -18,10 +18,10 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, system-manager }:
+  outputs = { self, flake-utils, nixpkgs, home-manager, system-manager }:
     let
       # Systems supported
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
       # Helper function to generate an attrset '{ x86_64-linux = f "x86_64-linux"; ... }'
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -30,28 +30,18 @@
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
 
       # System configurations using system-manager
-      systemConfigs = {
-        # Default x86_64 system configuration
-        default = system-manager.lib.makeSystemConfig {
-          system = "x86_64-linux";
-          modules = [ ./system/default.nix ];
-        };
-        
-        # Raspberry Pi 5 system configuration
-        pi5 = system-manager.lib.makeSystemConfig {
-          system = "aarch64-linux"; # Raspberry Pi 5 uses aarch64 architecture
-          modules = [ 
-            ./system/pi5.nix
-            # Add any additional Pi-specific system modules here
-          ];
-        };
+
+      # System configurations
+      systemConfigs.pi5 = system-manager.lib.makeSystemConfig {
+        system = "aarch64-linux";
+        modules = [ ./system/pi5.nix ];
       };
-    in
+    
     {
 
       # System configurations
       systemConfigs = systemConfigs;
-    
+
       # Home Manager configurations
       homeConfigurations = {
         # Desktop/laptop configuration for user shyndman
@@ -147,5 +137,4 @@
       );
     };
 }
-
 

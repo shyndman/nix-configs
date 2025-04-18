@@ -29,7 +29,7 @@ fi
 
 # Apply the system configuration
 echo -e "${GREEN}Applying system configuration for Raspberry Pi 5...${NC}"
-nix run github:numtide/system-manager -- switch --flake .#system-configs.pi5
+nix run github:numtide/system-manager -- switch --flake .#systemConfigs.pi5
 
 # Verify the configuration was applied
 if [ $? -eq 0 ]; then
